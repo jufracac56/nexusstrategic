@@ -222,21 +222,32 @@
               <li>Soporte y ajustes estratégicos</li>
             </ul>
           </div>
-          <form action="https://formspree.io/f/meelkdvo" method="POST" class="contact-form" onsubmit="return false;">
+          <form action="https://formspree.io/f/meelkdvo" method="POST" class="contact-form">
             <label>
               Nombre de la entidad
-              <input type="message" />
+              <input type="text" name="organization" autocomplete="organization" required />
             </label>
             <label>
               Correo institucional
-              <input type="email" placeholder="contacto@institucion.gob.mx" />
+              <input
+                type="email"
+                name="email"
+                autocomplete="email"
+                placeholder="contacto@institucion.gob.mx"
+                required
+              />
             </label>
             <label>
               Mensaje
-              <textarea rows="4" placeholder="Describe tus necesidades institucionales"></textarea>
+              <textarea
+                name="message"
+                rows="4"
+                placeholder="Describe tus necesidades institucionales"
+                required
+              ></textarea>
             </label>
             <button class="btn primary" type="submit">Enviar solicitud</button>
-            <p class="form-note">Respuesta en 24–48 horas hábiles.</p>
+            <p class="form-note form-status" aria-live="polite">Respuesta en 24–48 horas hábiles.</p>
           </form>
         </div>
       </section>

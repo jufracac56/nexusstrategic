@@ -24,6 +24,58 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  const contactForm = document.querySelector('.contact-form');
+  if (contactForm instanceof HTMLFormElement) {
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+    const statusElement = contactForm.querySelector('.form-status');
+    const defaultStatusText = statusElement?.textContent ?? '';
+
+    const setStatus = (message, state) => {
+      if (!statusElement) return;
+      statusElement.textContent = message;
+      statusElement.dataset.state = state;
+    };
+
+    contactForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      if (submitButton instanceof HTMLButtonElement) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Enviando...';
+      }
+
+      setStatus('Enviando solicitud...', 'pending');
+
+      try {
+        const response = await fetch(contactForm.action, {
+          method: contactForm.method,
+          body: new FormData(contactForm),
+          headers: {
+            Accept: 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Request failed');
+        }
+
+        contactForm.reset();
+        setStatus('Solicitud enviada. Te contactaremos en 24-48 horas habiles.', 'success');
+      } catch (error) {
+        setStatus('No se pudo enviar la solicitud. Verifica tu cuenta de Formspree e intenta de nuevo.', 'error');
+      } finally {
+        if (submitButton instanceof HTMLButtonElement) {
+          submitButton.disabled = false;
+          submitButton.textContent = 'Enviar solicitud';
+        }
+
+        if (statusElement && statusElement.dataset.state === 'pending') {
+          setStatus(defaultStatusText, 'idle');
+        }
+      }
+    });
+  }
+
   const canvas = document.getElementById('particles-canvas');
   if (!canvas) return;
 
